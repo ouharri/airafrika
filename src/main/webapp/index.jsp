@@ -3,11 +3,13 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
+    <link rel="stylesheet" type="text/css" href="assets/styles/main.css">
+    <script src="assets/scripts/tailwindcss.js"></script>
 </head>
 <body>
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
-<a href="hello-servlet">Hello Servlet J</a>
+<a class="bg-red-300 text-xs" href="hello">Hello Servlet Je</a>
 </body>
 </html>
