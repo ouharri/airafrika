@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JpaBuddyIdeaProjectConfig">
+  <component name="JpaBuddyIdeaProjectConfig" ddlActionDbType="postgres">
     <option name="defaultUnitInitialized" value="true" />
     <option name="renamerInitialized" value="true" />
     <option name="sourceModelValue" value="Default" />
     <option name="targetDbValue" value="96c27e1a-88ab-473f-a4dc-a5342e53f310" />
     <option name="snapshotDbValue" value="96c27e1a-88ab-473f-a4dc-a5342e53f310" />
+    <option name="reverseEngineeringLastDbConnectionId" value="96c27e1a-88ab-473f-a4dc-a5342e53f310" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/com/airafrika/App/Entities" />
   </component>
 </project>

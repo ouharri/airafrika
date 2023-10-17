@@ -5,4 +5,13 @@
       <persistence-unit name="Default" />
     </persistence-units>
   </component>
+  <component name="ReverseEngineeringSettings">
+    <database-infos>
+      <database-info dbms-id="postgres">
+        <mapping-types>
+          <mapping-type sql-type="gender" java-class="java.lang.Object" />
+        </mapping-types>
+      </database-info>
+    </database-infos>
+  </component>
 </project>

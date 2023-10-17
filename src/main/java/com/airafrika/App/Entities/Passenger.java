@@ -1,14 +1,13 @@
 package com.airafrika.App.Entities;
 
 import com.airafrika.App.Enums.Gender;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -19,7 +18,8 @@ import java.util.UUID;
 @Table(name = "passenger")
 public class Passenger {
     @Id
-    @Column(name = "passenger_id", nullable = false)
+    @Column(name = "passenger_id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Size(max = 50)
@@ -49,7 +49,9 @@ public class Passenger {
     @Column(name = "birthday")
     private LocalDate birthday;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Gender gender;
 
     @Size(max = 255)

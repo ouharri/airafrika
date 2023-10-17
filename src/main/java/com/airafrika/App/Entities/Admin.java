@@ -1,11 +1,15 @@
 package com.airafrika.App.Entities;
 
 import com.airafrika.App.Enums.Gender;
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -16,13 +20,12 @@ import java.util.UUID;
 @Table(name = "admin")
 public class Admin {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "admin_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Size(max = 50)
-    @NotNull
-    @Column(name = "cnie", nullable = false, length = 50)
+    @Column(name = "cnie", length = 50)
     private String cnie;
 
     @Size(max = 100)
@@ -47,7 +50,9 @@ public class Admin {
     @Column(name = "birthday")
     private LocalDate birthday;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Gender gender;
 
     @Size(max = 255)
@@ -58,4 +63,5 @@ public class Admin {
     @Size(max = 255)
     @Column(name = "profile_picture")
     private String profilePicture;
+
 }

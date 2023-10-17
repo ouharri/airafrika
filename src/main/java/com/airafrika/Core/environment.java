@@ -28,6 +28,7 @@ public class environment {
                         }
 
                         String[] parts = line.split("=", 2);
+
                         if (parts.length == 2) {
                             String key = parts[0].trim();
                             String value = parts[1].trim();
