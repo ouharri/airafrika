@@ -31,8 +31,8 @@ public class MailProvider {
                             @Override
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(
-                                        environment.get("MAIL_USERNAME"),
-                                        environment.get("MAIL_PASSWORD")
+                                        System.getenv("MAIL_USERNAME"),
+                                        System.getenv("MAIL_PASSWORD")
                                 );
                             }
                         });
@@ -52,10 +52,10 @@ public class MailProvider {
      */
     private static Properties loadEmailProperties() throws IOException {
         Properties properties = new Properties();
-        properties.put("mail.smtp.auth", environment.get("MAIL_SMTP_AUTH"));
-        properties.put("mail.smtp.host", environment.get("MAIL_HOST"));
-        properties.put("mail.smtp.port", environment.get("MAIL_PORT"));
-        properties.put("mail.smtp.starttls.enable", environment.get("MAIL_SMTP_STARTTLS_ENABLE"));
+        properties.put("mail.smtp.auth", System.getenv("MAIL_SMTP_AUTH"));
+        properties.put("mail.smtp.host", System.getenv("MAIL_HOST"));
+        properties.put("mail.smtp.port", System.getenv("MAIL_PORT"));
+        properties.put("mail.smtp.starttls.enable", System.getenv("MAIL_SMTP_STARTTLS_ENABLE"));
         return properties;
     }
 }

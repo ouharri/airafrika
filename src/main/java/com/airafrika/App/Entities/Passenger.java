@@ -50,7 +50,7 @@ public class Passenger {
     private LocalDate birthday;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
+    @Column(name = "gender" ,columnDefinition = "Gender")
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Gender gender;
 

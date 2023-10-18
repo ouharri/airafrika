@@ -50,8 +50,8 @@ public class Admin {
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Gender gender;
 

@@ -3,6 +3,7 @@ package com.airafrika.App.Providers;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.airafrika.Core.environment;
+import lombok.Getter;
 
 /**
  * The Cloudinary class provides a centralized instance of the Cloudinary client
@@ -10,6 +11,11 @@ import com.airafrika.Core.environment;
  */
 public class cloudinaryProvider {
 
+    /**
+     * -- GETTER --
+     * Retrieves the Cloudinary client instance.
+     */
+    @Getter
     private static volatile Cloudinary cloudinary = null;
 
     private cloudinaryProvider() {
@@ -21,9 +27,9 @@ public class cloudinaryProvider {
                 if (cloudinary == null) {
                     cloudinary = new Cloudinary(
                             ObjectUtils.asMap(
-                                    "cloud_name", environment.get("CLOUDINARY_CLOUD_NAME"),
-                                    "api_key", environment.get("CLOUDINARY_API_KEY"),
-                                    "api_secret", environment.get("CLOUDINARY_API_SECRET")
+                                    "cloud_name", System.getenv("CLOUDINARY_CLOUD_NAME"),
+                                    "api_key", System.getenv("CLOUDINARY_API_KEY"),
+                                    "api_secret", System.getenv("CLOUDINARY_API_SECRET")
                             )
                     );
                 }
@@ -31,12 +37,4 @@ public class cloudinaryProvider {
         }
     }
 
-    /**
-     * Retrieves the Cloudinary client instance.
-     *
-     * @return The Cloudinary client instance.
-     */
-    public static Cloudinary getCloudinary() {
-        return cloudinary;
-    }
 }
