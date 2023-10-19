@@ -81,14 +81,9 @@
             <artifactId>weld-se-core</artifactId>
             <version>5.1.0.Final</version>
         </dependency>
-        <dependency>
-            <groupId>io.hypersistence</groupId>
-            <artifactId>hypersistence-utils-hibernate-60</artifactId>
-            <version>3.6.0</version>
-        </dependency>
 
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.3.1.Final</version>
             <type>pom</type>

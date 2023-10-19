@@ -1,6 +1,5 @@
 package com.airafrika.Core;
 
-import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -21,7 +20,9 @@ public class HibernateUtil {
                         Configuration configuration = new Configuration();
                         configuration.setProperties(loadHibernateProperties());
 
-                        configuration.addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
+                        configuration
+                                .addAnnotatedClass(com.airafrika.App.Entities.Admin.class)
+                                .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Admin.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.CompanyAerial.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Airport.class)

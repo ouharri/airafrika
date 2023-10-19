@@ -25,6 +25,7 @@ public class Main {
             try {
                 tx = session.beginTransaction();
                 Admin admn = new Admin();
+                admn = new Admin();
                 admn.setFirstName("John");
                 admn.setLastName("Doe");
                 admn.setEmail("ouharrioutman@gmail.com");

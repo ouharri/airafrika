@@ -1,22 +1,21 @@
 package com.airafrika.App.Entities;
 
 import com.airafrika.App.Enums.Gender;
-import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "admin")
 public class Admin {
     @Id
@@ -63,5 +62,4 @@ public class Admin {
     @Size(max = 255)
     @Column(name = "profile_picture")
     private String profilePicture;
-
 }
