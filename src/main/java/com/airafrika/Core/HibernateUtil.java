@@ -1,5 +1,7 @@
 package com.airafrika.Core;
 
+import jakarta.persistence.EntityManagerFactory;
+import lombok.Getter;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -7,12 +9,17 @@ import org.hibernate.cfg.Configuration;
 import java.util.Properties;
 
 public class HibernateUtil {
+
+    @Getter
     private static volatile SessionFactory sessionFactory = null;
+
+    @Getter
+    private static volatile EntityManagerFactory entityManagerFactory = null;
 
     private HibernateUtil() {
     }
 
-    public static SessionFactory getSessionFactory() {
+    static  {
         if (sessionFactory == null) {
             synchronized (HibernateUtil.class) {
                 if (sessionFactory == null) {
@@ -39,6 +46,7 @@ public class HibernateUtil {
                         StandardServiceRegistryBuilder serviceRegistryBuilder =
                                 new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
 
+                        entityManagerFactory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
                         sessionFactory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
                     } catch (Throwable ex) {
                         System.err.println("Initial SessionFactory creation failed: " + ex);
@@ -47,7 +55,6 @@ public class HibernateUtil {
                 }
             }
         }
-        return sessionFactory;
     }
 
     /**

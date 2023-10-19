@@ -21,7 +21,6 @@ import java.time.LocalDate;
 @Table(name = "admin")
 public class Admin implements Serializable {
     @Id
-    @UUID
     @Column(name = "admin_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private java.util.UUID id;

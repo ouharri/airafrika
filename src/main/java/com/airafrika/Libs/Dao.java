@@ -1,63 +1,66 @@
 package com.airafrika.Libs;
 
-import java.sql.SQLException;
+import com.airafrika.Core.HibernateUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.transaction.Transactional;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * An interface for Data Access Objects (DAOs) that perform CRUD operations on entities of type T.
- *
- * @param <T> The type of entity to be managed.
- */
-public interface Dao<T> {
+public class Dao<T> implements DaoInterface<T> {
 
-    /**
-     * Retrieves an entity by its unique identifier.
-     *
-     * @param id The unique identifier of the entity.
-     * @return An Optional containing the retrieved entity, or an empty Optional if not found.
-     * @throws SQLException If a database access error occurs.
-     */
-    Optional<T> get(UUID id) throws SQLException;
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private final EntityManager em = HibernateUtil.getSessionFactory().createEntityManager();
 
-    /**
-     * Retrieves all entities of type T.
-     *
-     * @return A list of all entities.
-     */
-    List<T> getAll();
+    @Override
+    public Optional<T> get(UUID id) {
+        return Optional.empty();
+    }
 
-    /**
-     * Creates a new entity in the database.
-     *
-     * @param entity The entity to be created.
-     * @return An Optional containing the created entity, or an empty Optional if there's an error.
-     * @throws SQLException If a database access error occurs.
-     */
-    Optional<T> create(T entity) throws SQLException;
+    @Override
+    public List<T> getAll() {
+        return null;
+    }
 
-    /**
-     * Updates an existing entity in the database.
-     *
-     * @param entity The entity to be updated.
-     * @return An Optional containing the updated entity, or an empty Optional if there's an error.
-     */
-    Optional<T> update(T entity);
+    @Override
+    @Transactional
+    public Optional<T> create(T entity) {
+//        try (Session session = sessionFactory.openSession()) {
+            EntityTransaction transaction = em.getTransaction();
+            try {
+                transaction.begin();
+                em.persist(entity);
+                transaction.commit();
+                return Optional.of(entity);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                return Optional.empty();
+            }
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//            return Optional.empty();
+//        }
+    }
 
-    /**
-     * Finds entities based on certain search criteria.
-     *
-     * @param criteria The search criteria.
-     * @return A list of entities that match the criteria.
-     */
-    List<T> find(Object criteria);
+    @Override
+    public Optional<T> update(T entity) {
+        return Optional.empty();
+    }
 
-    /**
-     * Deletes an entity from the database.
-     *
-     * @param entity The entity to be deleted.
-     * @return True if the deletion is successful, otherwise false.
-     */
-    boolean delete(T entity);
+    @Override
+    public List<T> find(Object criteria) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(T entity) {
+        return false;
+    }
 }
