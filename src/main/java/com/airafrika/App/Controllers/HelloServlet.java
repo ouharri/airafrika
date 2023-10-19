@@ -1,9 +1,10 @@
 package com.airafrika.App.Controllers;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.airafrika.App.Entities.Admin;
+import com.airafrika.App.Entities.*;
 import com.airafrika.App.Enums.Gender;
 import com.airafrika.Core.HibernateUtil;
 import jakarta.servlet.http.*;
@@ -22,7 +23,7 @@ public class HelloServlet extends HttpServlet {
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             try {
                 tx = session.beginTransaction();
-                Admin admn = new Admin();
+                Passenger admn = new Passenger();
                 admn.setFirstName("John");
                 admn.setLastName("Doe");
                 admn.setEmail("ouharrioutman@gmail.com");
@@ -31,6 +32,25 @@ public class HelloServlet extends HttpServlet {
                 admn.setCnie("AD334799");
                 admn.setPassword("jfhjhf");
                 session.persist(admn);
+
+                Reservation res = new Reservation();
+                res.setPassenger(admn);
+                session.persist(res);
+
+
+                Extra ext = new Extra();
+                ext.setDescription("hhhfgf");
+                ext.setPrice(BigDecimal.valueOf(100));
+                ext.setName("test");
+                ext.setPicture("test");
+                session.persist(ext);
+
+                ReservationExtra reservationExtra = new ReservationExtra();
+                reservationExtra.setExtra(ext);
+                reservationExtra.setReservation(res);
+                session.persist(reservationExtra);
+
+
                 tx.commit();
             } catch (Exception e) {
                 if (tx != null) {

@@ -2,8 +2,11 @@ package com.airafrika.App.Entities;
 
 import com.airafrika.App.Enums.Gender;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +14,8 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,11 +23,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "passenger")
-public class Passenger {
+public class Passenger implements Serializable {
     @Id
     @Column(name = "passenger_id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private java.util.UUID id;
 
     @Size(max = 50)
     @NotNull
@@ -43,6 +46,7 @@ public class Passenger {
 
     @Size(max = 200)
     @NotNull
+    @Email
     @Column(name = "email", nullable = false, length = 200)
     private String email;
 

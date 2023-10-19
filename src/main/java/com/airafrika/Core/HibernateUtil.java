@@ -23,7 +23,6 @@ public class HibernateUtil {
                         configuration
                                 .addAnnotatedClass(com.airafrika.App.Entities.Admin.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Admin.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.CompanyAerial.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Airport.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Flight.class)
@@ -33,6 +32,8 @@ public class HibernateUtil {
                                 .addAnnotatedClass(com.airafrika.App.Entities.Itinerary.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Flightpath.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
+                                .addAnnotatedClass(com.airafrika.App.Entities.ReservationExtra.class)
+                                .addAnnotatedClass(com.airafrika.App.Entities.Extra.class)
                                 .addAnnotatedClass(com.airafrika.App.Entities.Paiement.class);
 
                         StandardServiceRegistryBuilder serviceRegistryBuilder =

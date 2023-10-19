@@ -3,15 +3,16 @@ package com.airafrika.App.Entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,11 +20,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "flight")
-public class Flight {
+public class Flight implements Serializable {
     @Id
+    @UUID
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "flight_id", nullable = false)
-    private UUID id;
+    private java.util.UUID id;
 
     @Size(max = 255)
     @NotNull

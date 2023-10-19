@@ -3,13 +3,14 @@ package com.airafrika.App.Entities;
 import com.airafrika.App.Enums.FlightDirection;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.Instant;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,10 +18,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "flight_schedule")
-public class FlightSchedule {
+public class FlightSchedule implements Serializable {
     @Id
+    @UUID
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "flight_schedule_id", nullable = false)
-    private UUID id;
+    private java.util.UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id")

@@ -2,12 +2,13 @@ package com.airafrika.App.Entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.Instant;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,10 +16,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "itinerary")
-public class Itinerary {
+public class Itinerary implements Serializable {
     @Id
+    @UUID
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "itinerary_id", nullable = false)
-    private UUID id;
+    private java.util.UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")

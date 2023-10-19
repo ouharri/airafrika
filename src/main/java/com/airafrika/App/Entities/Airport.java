@@ -3,8 +3,9 @@ package com.airafrika.App.Entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.UUID;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -12,11 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "airport")
-public class Airport {
+public class Airport implements Serializable {
     @Id
+    @UUID
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "airport_id", nullable = false)
-    private UUID id;
+    private java.util.UUID id;
 
     @Size(max = 50)
     @Column(name = "name", length = 50)

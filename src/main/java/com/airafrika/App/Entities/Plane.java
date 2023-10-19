@@ -1,16 +1,14 @@
 package com.airafrika.App.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -18,10 +16,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "plane")
-public class Plane {
+public class Plane implements Serializable {
     @Id
+    @UUID
     @Column(name = "plane_id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private java.util.UUID id;
 
     @Size(max = 255)
     @Column(name = "model")

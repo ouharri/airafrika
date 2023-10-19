@@ -1,12 +1,14 @@
 package com.airafrika.App.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -14,10 +16,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservation_extra")
-public class ReservationExtra {
+public class ReservationExtra implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "reservation_extra_id", nullable = false)
-    private UUID id;
+    private java.util.UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")

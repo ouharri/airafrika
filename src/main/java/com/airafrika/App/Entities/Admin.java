@@ -2,14 +2,16 @@ package com.airafrika.App.Entities;
 
 import com.airafrika.App.Enums.Gender;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.validator.constraints.UUID;
 import org.hibernate.type.SqlTypes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,11 +19,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "admin")
-public class Admin {
+public class Admin implements Serializable {
     @Id
+    @UUID
     @Column(name = "admin_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private java.util.UUID id;
 
     @Size(max = 50)
     @Column(name = "cnie", length = 50)
@@ -39,6 +42,7 @@ public class Admin {
 
     @Size(max = 200)
     @NotNull
+    @Email
     @Column(name = "email", nullable = false, length = 200)
     private String email;
 
