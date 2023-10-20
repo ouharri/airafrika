@@ -2,7 +2,6 @@ package org.airafrika.Core;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.Getter;
-import org.airafrika.App.Entities.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
@@ -54,20 +53,19 @@ public class HibernateUtil {
     private static void addAnnotatedClasses(Configuration configuration) {
         configuration
                 .addAnnotatedClass(org.airafrika.App.Entities.Admin.class)
-                .addAnnotatedClass(Admin.class)
-                .addAnnotatedClass(Plane.class)
-                .addAnnotatedClass(CompanyAerial.class)
-                .addAnnotatedClass(Airport.class)
-                .addAnnotatedClass(Flight.class)
-                .addAnnotatedClass(FlightSchedule.class)
-                .addAnnotatedClass(Passenger.class)
-                .addAnnotatedClass(Reservation.class)
-                .addAnnotatedClass(Itinerary.class)
-                .addAnnotatedClass(Flightpath.class)
-                .addAnnotatedClass(Plane.class)
-                .addAnnotatedClass(ReservationExtra.class)
-                .addAnnotatedClass(Extra.class)
-                .addAnnotatedClass(Paiement.class);
+                .addAnnotatedClass(org.airafrika.App.Entities.Plane.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.CompanyAerial.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Airport.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Flight.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.FlightSchedule.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Passenger.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Reservation.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Itinerary.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Flightpath.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Plane.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.ReservationExtra.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Extra.class)
+                .addAnnotatedClass(org.airafrika.App.Entities.Paiement.class);
     }
 
     /**

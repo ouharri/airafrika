@@ -4,12 +4,13 @@ import java.io.*;
 import java.time.LocalDate;
 
 import org.airafrika.App.Enums.Gender;
+import org.airafrika.Dao.AdminDao;
 import org.airafrika.Dao.ReservationExtraDao;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.airafrika.App.Entities.Admin;
 
-@WebServlet(name = "helloServlet", value = "/hello")
+@WebServlet(name = "helloController", value = "/hello")
 public class HelloController extends HttpServlet {
     private String message;
 
@@ -30,6 +31,12 @@ public class HelloController extends HttpServlet {
 //            System.out.println(e.toString());
 //            System.out.println("\n");
 //        });
+
+        new AdminDao().getAll().forEach((e) -> {
+            System.out.println("\n");
+            System.out.println(e.toString());
+            System.out.println("\n");
+        });
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
