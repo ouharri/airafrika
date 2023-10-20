@@ -42,11 +42,11 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
         Type type = superClass.getActualTypeArguments()[0];
         _class = (Class<T>) type;
 
-        if (_class.isAnnotationPresent(Table.class))
-            _table = _class.getAnnotation(Table.class).name().toLowerCase();
-
         if (_table == null)
             _table = _class.getName();
+
+        if (_table == null && _class.isAnnotationPresent(Table.class))
+            _table = _class.getAnnotation(Table.class).name();
 
         try {
             entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
