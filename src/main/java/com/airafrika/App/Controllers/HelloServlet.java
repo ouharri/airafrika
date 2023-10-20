@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import com.airafrika.App.Entities.*;
 import com.airafrika.App.Enums.Gender;
+import com.airafrika.Dao.AdminDao;
 import com.airafrika.Libs.Dao;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -25,7 +26,11 @@ public class HelloServlet extends HttpServlet {
         admn.setCnie("AD334799");
         admn.setPassword("jfhjhf");
 
-        System.out.println(new Dao<Admin>().create(admn));
+        new AdminDao().getAll().forEach((e) -> {
+            System.out.println("\n");
+            System.out.println(e.toString());
+            System.out.println("\n");
+        });
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -51,7 +51,7 @@ public interface DaoInterface<T> {
      * @param criteria The search criteria.
      * @return A list of entities that match the criteria.
      */
-    List<T> find(Object criteria);
+    Optional<T> find(Object criteria);
 
     /**
      * Deletes an entity from the database.

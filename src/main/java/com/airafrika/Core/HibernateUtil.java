@@ -2,52 +2,40 @@ package com.airafrika.Core;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.Getter;
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import java.util.Properties;
 
+/**
+ * HibernateUtil is a utility class for managing Hibernate EntityManagerFactory
+ * and initializing the Hibernate configuration for your application.
+ */
 public class HibernateUtil {
 
-    @Getter
-    private static volatile SessionFactory sessionFactory = null;
-
+    /**
+     * The EntityManagerFactory used for managing entity objects.
+     */
     @Getter
     private static volatile EntityManagerFactory entityManagerFactory = null;
 
     private HibernateUtil() {
     }
 
-    static  {
-        if (sessionFactory == null) {
+    static {
+        if (entityManagerFactory == null) {
             synchronized (HibernateUtil.class) {
-                if (sessionFactory == null) {
+                if (entityManagerFactory == null) {
                     try {
                         Configuration configuration = new Configuration();
                         configuration.setProperties(loadHibernateProperties());
 
-                        configuration
-                                .addAnnotatedClass(com.airafrika.App.Entities.Admin.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.CompanyAerial.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Airport.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Flight.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.FlightSchedule.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Passenger.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Reservation.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Itinerary.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Flightpath.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.ReservationExtra.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Extra.class)
-                                .addAnnotatedClass(com.airafrika.App.Entities.Paiement.class);
+                        addAnnotatedClasses(configuration);
 
                         StandardServiceRegistryBuilder serviceRegistryBuilder =
                                 new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
 
                         entityManagerFactory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
-                        sessionFactory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
                     } catch (Throwable ex) {
                         System.err.println("Initial SessionFactory creation failed: " + ex);
                         throw new ExceptionInInitializerError(ex);
@@ -55,6 +43,29 @@ public class HibernateUtil {
                 }
             }
         }
+    }
+
+    /**
+     * Adds annotated entity classes to the Hibernate configuration.
+     *
+     * @param configuration The Hibernate Configuration instance.
+     */
+    private static void addAnnotatedClasses(Configuration configuration) {
+        configuration
+                .addAnnotatedClass(com.airafrika.App.Entities.Admin.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.CompanyAerial.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Airport.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Flight.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.FlightSchedule.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Passenger.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Reservation.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Itinerary.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Flightpath.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Plane.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.ReservationExtra.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Extra.class)
+                .addAnnotatedClass(com.airafrika.App.Entities.Paiement.class);
     }
 
     /**
