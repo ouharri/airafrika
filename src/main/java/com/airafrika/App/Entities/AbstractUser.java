@@ -7,17 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.hibernate.validator.constraints.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "abstract_users")

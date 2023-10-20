@@ -3,20 +3,17 @@ package com.airafrika.App.Entities;
 import com.airafrika.App.Enums.FlightDirection;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.hibernate.validator.constraints.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "flight_schedule")
 public class FlightSchedule implements Serializable {
     @Id

@@ -10,8 +10,9 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "company_aerial")
 public class CompanyAerial implements Serializable {
     @Id

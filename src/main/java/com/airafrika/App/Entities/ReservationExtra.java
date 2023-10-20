@@ -2,19 +2,15 @@ package com.airafrika.App.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UUID;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "reservation_extra")
 public class ReservationExtra implements Serializable {
     @Id

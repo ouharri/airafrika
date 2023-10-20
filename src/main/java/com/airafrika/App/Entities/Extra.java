@@ -4,21 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.hibernate.validator.constraints.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
+@ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "extra")
 public class Extra implements Serializable {
     @Id

@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import com.airafrika.App.Entities.*;
 import com.airafrika.App.Enums.Gender;
 import com.airafrika.Dao.AdminDao;
-import com.airafrika.Libs.Dao;
+import com.airafrika.Dao.ReservationExtraDao;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "helloServlet", value = "/hello")
-public class HelloServlet extends HttpServlet {
+public class HelloController extends HttpServlet {
     private String message;
 
     public void init() {
@@ -26,7 +26,7 @@ public class HelloServlet extends HttpServlet {
         admn.setCnie("AD334799");
         admn.setPassword("jfhjhf");
 
-        new AdminDao().getAll().forEach((e) -> {
+        new ReservationExtraDao().getAll().forEach((e) -> {
             System.out.println("\n");
             System.out.println(e.toString());
             System.out.println("\n");
