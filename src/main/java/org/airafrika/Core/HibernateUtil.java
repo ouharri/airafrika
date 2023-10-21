@@ -1,5 +1,8 @@
 package org.airafrika.Core;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Named;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.Getter;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -11,16 +14,19 @@ import java.util.Properties;
  * HibernateUtil is a utility class for managing Hibernate EntityManagerFactory
  * and initializing the Hibernate configuration for your application.
  */
+@Named
+@ApplicationScoped
 public class HibernateUtil {
+
+    private HibernateUtil() {
+    }
 
     /**
      * The EntityManagerFactory used for managing entity objects.
      */
     @Getter
+    @Produces
     private static volatile EntityManagerFactory entityManagerFactory = null;
-
-    private HibernateUtil() {
-    }
 
     static {
         if (entityManagerFactory == null) {
