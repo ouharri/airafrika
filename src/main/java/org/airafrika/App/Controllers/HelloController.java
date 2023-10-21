@@ -23,6 +23,20 @@ public class HelloController extends HttpServlet {
     public void init() {
         message = "Hello World!";
 
+        Admin admin = new Admin();
+        admin.setFirstName("John");
+        admin.setLastName("Doe");
+        admin.setEmail("ouharrioutman@gmail.com");
+        admin.setPassword("fgfrg");
+        admin.setCnie("123456789");
+        admin.setBirthday(LocalDate.now());
+        admin.setPhone("123456789");
+        admin.setProfilePicture("ff");
+        admin.setGender(Gender.MALE);
+
+        adminDao.create(admin);
+
+
         adminDao.getAll().forEach((e) -> {
             System.out.println("\n");
             System.out.println(e.toString());
