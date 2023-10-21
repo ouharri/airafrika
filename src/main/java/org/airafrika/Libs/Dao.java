@@ -33,9 +33,9 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     private final Class<T> _class;
     private volatile String _table = null;
 
-    protected volatile EntityManager entityManager;
+    protected volatile static Logger logger;
+    protected volatile static EntityManager entityManager;
 
-    private static final Logger logger = LoggerFactory.getLogger(Dao.class);
 
     /**
      * Constructs a new Dao instance for a specific entity type.
@@ -57,6 +57,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
         } catch (Exception e) {
             logger.error("Error while creating entity manager", e);
         }
+
+        logger = LoggerFactory.getLogger(_class);
     }
 
     /**
