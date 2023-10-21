@@ -1,5 +1,7 @@
 package org.airafrika.Libs;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Alternative;
 import org.airafrika.Core.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +26,14 @@ import jakarta.transaction.Transactional;
  *
  * @param <T> The entity type this DAO operates on.
  */
+@Dependent
+@Alternative
 public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
 
     private final Class<T> _class;
     private volatile String _table = null;
 
-    protected volatile EntityManager entityManager = null;
+    protected volatile EntityManager entityManager;
 
     private static final Logger logger = LoggerFactory.getLogger(Dao.class);
 
