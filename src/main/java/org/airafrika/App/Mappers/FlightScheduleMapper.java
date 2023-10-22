@@ -1,5 +1,8 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.FlightSchedule;
 import org.airafrika.App.Entities.Flight;
@@ -8,9 +11,14 @@ import org.airafrika.App.Enums.FlightDirection;
 import java.time.Instant;
 import java.util.UUID;
 
+@Dependent
+@Named("FlightScheduleMapper")
 public class FlightScheduleMapper {
-    public static FlightSchedule flightScheduleWrapper(HttpServletRequest request) {
-        FlightSchedule flightSchedule = new FlightSchedule();
+
+    @Inject
+    FlightSchedule flightSchedule;
+
+    public FlightSchedule render(HttpServletRequest request) {
 
         String flightIdStr = getParameter(request, "flightId");
         if (flightIdStr != null && !flightIdStr.isEmpty()) {
