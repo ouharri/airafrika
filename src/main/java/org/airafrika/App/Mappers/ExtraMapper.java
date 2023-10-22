@@ -1,14 +1,22 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Extra;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
+@Dependent
+@Named("ExtraMapper")
 public class ExtraMapper {
-    public static Extra extraWrapper(HttpServletRequest request) {
-        Extra extra = new Extra();
+
+    @Inject
+    Extra extra;
+
+    public Extra render(HttpServletRequest request) {
 
         String name = getParameter(request, "name");
         if (name != null && !name.isEmpty()) {

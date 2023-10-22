@@ -1,11 +1,18 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.CompanyAerial;
 
+@Dependent
+@Named("CompanyAerialMapper")
 public class CompanyAerialMapper {
-    public static CompanyAerial companyAerialWrapper(HttpServletRequest request) {
-        CompanyAerial companyAerial = new CompanyAerial();
+
+    @Inject
+    CompanyAerial companyAerial;
+    public CompanyAerial render(HttpServletRequest request) {
 
         String name = getParameter(request, "name");
         if (name != null && !name.isEmpty()) {

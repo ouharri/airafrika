@@ -1,11 +1,18 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Airport;
 
+@Dependent
+@Named("AirportMapper")
 public class AirportMapper {
-    public static Airport airportWrapper(HttpServletRequest request) {
-        Airport airport = new Airport();
+
+    @Inject
+    Airport airport;
+    public Airport render(HttpServletRequest request) {
 
         String name = getParameter(request, "name");
         if (name != null && !name.isEmpty()) {
