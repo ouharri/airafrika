@@ -6,14 +6,14 @@
     <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
     <option name="UPDATING_POLICY" value="redeploy-artifacts" />
     <deployment>
-      <artifact name="AirAfrika:war">
-        <settings>
-          <option name="CONTEXT_PATH" value="/AirAfrika_war" />
-        </settings>
-      </artifact>
       <artifact name="AirAfrika:war exploded">
         <settings>
           <option name="CONTEXT_PATH" value="/AirAfrika" />
+        </settings>
+      </artifact>
+      <artifact name="AirAfrika:war">
+        <settings>
+          <option name="CONTEXT_PATH" value="/AirAfrika_war" />
         </settings>
       </artifact>
     </deployment>
