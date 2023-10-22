@@ -1,14 +1,22 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Passenger;
 import org.airafrika.App.Enums.Gender;
 
 import java.time.LocalDate;
 
+@Dependent
+@Named("PassengerMapper")
 public class PassengerMapper {
-    public static Passenger passengerWrapper(HttpServletRequest request) {
-        Passenger passenger = new Passenger();
+
+    @Inject
+    Passenger passenger;
+
+    public Passenger render(HttpServletRequest request) {
 
         String cnie = getParameter(request, "cnie");
         if (cnie != null && !cnie.isEmpty()) {

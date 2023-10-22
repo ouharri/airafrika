@@ -1,11 +1,19 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Plane;
 
+@Dependent
+@Named("PlaneMapper")
 public class PlaneMapper {
-    public static Plane planeWrapper(HttpServletRequest request) {
-        Plane plane = new Plane();
+
+    @Inject
+    Plane plane;
+
+    public Plane render(HttpServletRequest request) {
 
         String model = getParameter(request, "model");
         if (model != null && !model.isEmpty()) {

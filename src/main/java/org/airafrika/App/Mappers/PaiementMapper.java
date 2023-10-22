@@ -1,5 +1,8 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Paiement;
 import org.airafrika.App.Entities.Reservation;
@@ -8,9 +11,14 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+@Dependent
+@Named("PaiementMapper")
 public class PaiementMapper {
-    public static Paiement paiementWrapper(HttpServletRequest request) {
-        Paiement paiement = new Paiement();
+
+    @Inject
+    Paiement paiement;
+
+    public Paiement render(HttpServletRequest request) {
 
         String reservationIdStr = getParameter(request, "reservationId");
         if (reservationIdStr != null && !reservationIdStr.isEmpty()) {
