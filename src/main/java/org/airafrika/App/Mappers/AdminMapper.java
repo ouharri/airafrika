@@ -1,14 +1,21 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Admin;
 import org.airafrika.App.Enums.Gender;
 
 import java.time.LocalDate;
 
+@Dependent
+@Named("adminMapper")
 public class AdminMapper {
-    public static Admin AdminWrapper(HttpServletRequest request) {
-        Admin admin = new Admin();
+    @Inject
+    private Admin admin;
+
+    public Admin render(HttpServletRequest request) {
 
         String cnie = getParameter(request, "cnie");
         if (cnie != null && !cnie.isEmpty()) {

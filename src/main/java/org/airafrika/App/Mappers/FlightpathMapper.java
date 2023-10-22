@@ -1,5 +1,8 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Flightpath;
 import org.airafrika.App.Entities.Flight;
@@ -9,9 +12,14 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.UUID;
 
+@Dependent
+@Named("FlightpathMapper")
 public class FlightpathMapper {
-    public static Flightpath flightpathWrapper(HttpServletRequest request) {
-        Flightpath flightpath = new Flightpath();
+
+    @Inject
+    Flightpath flightpath;
+
+    public Flightpath render(HttpServletRequest request) {
 
         String flightIdStr = getParameter(request, "flightId");
         if (flightIdStr != null && !flightIdStr.isEmpty()) {

@@ -1,5 +1,8 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Flight;
 import org.airafrika.App.Entities.Plane;
@@ -10,9 +13,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Dependent
+@Named("FlightMapper")
 public class FlightMapper {
-    public static Flight flightWrapper(HttpServletRequest request) {
-        Flight flight = new Flight();
+
+    @Inject
+    Flight flight;
+
+    public Flight render(HttpServletRequest request) {
 
         String title = getParameter(request, "title");
         if (title != null && !title.isEmpty()) {

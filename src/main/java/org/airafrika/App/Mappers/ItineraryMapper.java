@@ -1,5 +1,8 @@
 package org.airafrika.App.Mappers;
 
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airafrika.App.Entities.Itinerary;
 import org.airafrika.App.Entities.Reservation;
@@ -9,9 +12,14 @@ import org.airafrika.App.Entities.Flightpath;
 import java.time.Instant;
 import java.util.UUID;
 
+@Dependent
+@Named("ItineraryMapper")
 public class ItineraryMapper {
-    public static Itinerary itineraryWrapper(HttpServletRequest request) {
-        Itinerary itinerary = new Itinerary();
+
+    @Inject
+    Itinerary itinerary;
+
+    public Itinerary render(HttpServletRequest request) {
 
         String reservationIdStr = getParameter(request, "reservationId");
         if (reservationIdStr != null && !reservationIdStr.isEmpty()) {
