@@ -54,6 +54,118 @@ public interface DaoInterface<T> {
     Optional<T> find(Object criteria);
 
     /**
+     * Specifies a "WHERE" condition for queries.
+     *
+     * @param key   The name of the column.
+     * @param value The value to compare.
+     * @return An instance of the model with the "WHERE" condition added.
+     */
+    DaoInterface<T> where(String key, Object value);
+
+    /**
+     * Specifies a "WHERE" condition with a custom operator for queries.
+     *
+     * @param key      The name of the column.
+     * @param operator The custom comparison operator (e.g., "=", "<").
+     * @param value    The value to compare.
+     * @return An instance of the model with the "WHERE" condition added.
+     */
+    DaoInterface<T> where(String key, String operator, Object value);
+
+    /**
+     * Specifies an "AND" condition for queries.
+     *
+     * @param key   The name of the column.
+     * @param value The value to compare.
+     * @return An instance of the model with the "AND" condition added.
+     */
+    DaoInterface<T> and(String key, Object value);
+
+    /**
+     * Specifies an "AND" condition with a custom operator for queries.
+     *
+     * @param key      The name of the column.
+     * @param operator The custom comparison operator (e.g., "=", "<").
+     * @param value    The value to compare.
+     * @return An instance of the model with the "AND" condition added.
+     */
+    DaoInterface<T> and(String key, String operator, Object value);
+
+    /**
+     * Specifies an "OR" condition for queries.
+     *
+     * @param key   The name of the column.
+     * @param value The value to compare.
+     * @return An instance of the model with the "OR" condition added.
+     */
+    DaoInterface<T> or(String key, Object value);
+
+    /**
+     * Specifies an "OR" condition with a custom operator for queries.
+     *
+     * @param key      The name of the column.
+     * @param operator The custom comparison operator (e.g., "=", "<").
+     * @param value    The value to compare.
+     * @return An instance of the model with the "OR" condition added.
+     */
+    DaoInterface<T> or(String key, String operator, Object value);
+
+    /**
+     * Specifies a "LIKE" condition for queries.
+     *
+     * @param key   The name of the column.
+     * @param value The value to search for.
+     * @return An instance of the model with the "LIKE" condition added.
+     */
+    DaoInterface<T> like(String key, Object value);
+
+    /**
+     * Limits the number of results returned by the query.
+     *
+     * @param limit The maximum number of records to return.
+     * @return An instance of the model with the limit added.
+     */
+    DaoInterface<T> limit(int limit);
+
+    /**
+     * Sets an offset for query results.
+     *
+     * @param offset The number of records to skip before starting to return results.
+     * @return An instance of the model with the offset added.
+     */
+    DaoInterface<T> offset(int offset);
+
+    /**
+     * Specifies the sorting order of query results.
+     *
+     * @param key       The column name for sorting.
+     * @param direction The sorting direction (ascending or descending).
+     * @return An instance of the model with the specified sorting order.
+     */
+    DaoInterface<T> orderBy(String key, String direction);
+
+    /**
+     * Executes the query and returns a list of results.
+     *
+     * @return A list of models corresponding to the query.
+     */
+    List<T> find();
+
+    /**
+     * Executes the query and returns a single result.
+     *
+     * @return A model corresponding to the query.
+     */
+    T findOne();
+
+    /**
+     * Counts the number of records returned by the query.
+     *
+     * @return The number of records returned by the query.
+     */
+    Long count();
+
+    /**
      * Deletes an entity from the database.
      *
      * @param entity The entity to be deleted.

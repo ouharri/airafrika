@@ -7,13 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -34,7 +31,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     private volatile String _table = null;
 
     protected volatile static Logger logger;
-    protected volatile static EntityManager entityManager;
+    protected volatile static EntityManager em;
+
+    private final StringBuilder _query = new StringBuilder();
+    private final Queue<Object> _queryParam = new LinkedList<>();
 
 
     /**
@@ -53,7 +53,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
             _table = _class.getAnnotation(Table.class).name();
 
         try {
-            entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+            em = HibernateUtil.getEntityManagerFactory().createEntityManager();
         } catch (Exception e) {
             logger.error("Error while creating entity manager", e);
         }
@@ -69,7 +69,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      */
     @Override
     public Optional<T> get(UUID id) {
-        return Optional.ofNullable(entityManager.find(_class, id));
+        return Optional.ofNullable(em.find(_class, id));
     }
 
     /**
@@ -79,7 +79,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      */
     @Override
     public List<T> getAll() {
-        TypedQuery<T> query = entityManager.createQuery("FROM " + _table, _class);
+        TypedQuery<T> query = em.createQuery("FROM " + _table, _class);
         return query.getResultList();
     }
 
@@ -92,10 +92,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     @Override
     @Transactional
     public Optional<T> create(T entity) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            entityManager.persist(entity);
+            em.persist(entity);
             transaction.commit();
             return Optional.of(entity);
         } catch (Exception e) {
@@ -116,10 +116,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     @Override
     @Transactional
     public Optional<T> update(T entity) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            T updatedEntity = entityManager.merge(entity);
+            T updatedEntity = em.merge(entity);
             transaction.commit();
             return Optional.of(updatedEntity);
         } catch (Exception e) {
@@ -139,10 +139,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      */
     @Override
     public Optional<T> find(Object criteria) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            T entity = entityManager.find(_class, criteria);
+            T entity = em.find(_class, criteria);
             transaction.commit();
             return Optional.ofNullable(entity);
         } catch (Exception e) {
@@ -155,6 +155,217 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     }
 
     /**
+     * Constructs a WHERE clause to filter query results based on a column and its value.
+     *
+     * @param key   The name of the column.
+     * @param value The value to compare.
+     * @return The current Dao instance with the WHERE clause added.
+     */
+    @Override
+    public Dao<T> where(String key, Object value) {
+        _queryParam.add(value);
+        _query.append(" WHERE ").append(key).append(" = :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Constructs a WHERE clause to filter query results based on a column, a custom comparison operator, and a value.
+     *
+     * @param key      The name of the column.
+     * @param operator The custom comparison operator (e.g., "=", "<").
+     * @param value    The value to compare.
+     * @return The current Dao instance with the WHERE clause added.
+     */
+    @Override
+    public Dao<T> where(String key, String operator, Object value) {
+        _queryParam.add(value);
+        _query.append(" WHERE ").append(key).append(" ").append(operator).append(" :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Constructs an AND clause to further filter query results based on a column and its value.
+     *
+     * @param key   The name of the column.
+     * @param value The value to compare.
+     * @return The current Dao instance with the AND clause added.
+     */
+    @Override
+    public Dao<T> and(String key, Object value) {
+        _queryParam.add(value);
+        _query.append(" AND ").append(key).append(" = :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Constructs an AND clause to further filter query results based on a column, a custom comparison operator, and a value.
+     *
+     * @param key      The name of the column.
+     * @param operator The custom comparison operator (e.g., "=", "<").
+     * @param value    The value to compare.
+     * @return The current Dao instance with the AND clause added.
+     */
+    @Override
+    public Dao<T> and(String key, String operator, Object value) {
+        _queryParam.add(value);
+        _query.append(" AND ").append(key).append(" ").append(operator).append(" :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Constructs an OR clause to further filter query results based on a column and its value.
+     *
+     * @param key   The name of the column.
+     * @param value The value to compare.
+     * @return The current Dao instance with the OR clause added.
+     */
+    @Override
+    public Dao<T> or(String key, Object value) {
+        _queryParam.add(value);
+        _query.append(" OR ").append(key).append(" = :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Constructs an OR clause to further filter query results based on a column, a custom comparison operator, and a value.
+     *
+     * @param key      The name of the column.
+     * @param operator The custom comparison operator (e.g., "=", "<").
+     * @param value    The value to compare.
+     * @return The current Dao instance with the OR clause added.
+     */
+    @Override
+    public Dao<T> or(String key, String operator, Object value) {
+        _queryParam.add(value);
+        _query.append(" OR ").append(key).append(" ").append(operator).append(" :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Constructs a LIKE clause to search query results based on a column and a value pattern.
+     *
+     * @param key   The name of the column.
+     * @param value The value to search for.
+     * @return The current Dao instance with the LIKE clause added.
+     */
+    @Override
+    public Dao<T> like(String key, Object value) {
+        _queryParam.add(value);
+        _query.append(" WHERE ").append(key).append(" LIKE :").append(_queryParam.size());
+        return this;
+    }
+
+    /**
+     * Limits the maximum number of records to return in the query result.
+     *
+     * @param limit The maximum number of records to return.
+     * @return The current Dao instance with the LIMIT clause added.
+     */
+    @Override
+    public Dao<T> limit(int limit) {
+        _query.append(" LIMIT ").append(limit);
+        return this;
+    }
+
+    /**
+     * Sets the number of records to skip before starting to return results in the query result.
+     *
+     * @param offset The number of records to skip.
+     * @return The current Dao instance with the OFFSET clause added.
+     */
+    @Override
+    public Dao<T> offset(int offset) {
+        _query.append(" OFFSET ").append(offset);
+        return this;
+    }
+
+    /**
+     * Specifies the column and sorting direction for ordering query results.
+     *
+     * @param key       The column name for sorting.
+     * @param direction The sorting direction (ascending or descending).
+     * @return The current Dao instance with the ORDER BY clause added.
+     */
+    @Override
+    public Dao<T> orderBy(String key, String direction) {
+        _query.append(" ORDER BY ").append(key).append(" ").append(direction);
+        return this;
+    }
+
+    /**
+     * Retrieves records from the associated database table based on the constructed query.
+     *
+     * @return A list of model objects representing the retrieved records.
+     */
+    @Override
+    public List<T> find() {
+        if (_query.isEmpty()) return new ArrayList<>();
+
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            TypedQuery<T> query = em.createQuery("FROM " + _table + _query, _class);
+            for (int i = 0; i < _queryParam.size(); i++) {
+                query.setParameter(i + 1, _queryParam.poll());
+            }
+            return query.getResultList();
+        } catch (Exception e) {
+            logger.error("Error while updating entity", e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * Retrieves a single record from the associated database table based on the constructed query.
+     *
+     * @return The model object representing the retrieved record, or null if not found.
+     */
+    @Override
+    public T findOne() {
+        if (_query.isEmpty()) return null;
+
+        _query.append("LIMIT 1");
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            TypedQuery<T> query = em.createQuery("FROM " + _table + _query, _class);
+            for (int i = 0; i < _queryParam.size(); i++) {
+                query.setParameter(i + 1, _queryParam.poll());
+            }
+            return query.getSingleResult();
+        } catch (Exception e) {
+            logger.error("Error while updating entity", e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Counts the number of records returned by the query.
+     *
+     * @return The number of records returned by the query.
+     */
+    @Override
+    public Long count() {
+        if (_query.isEmpty()) {
+            TypedQuery<Long> countQuery = em.createQuery("SELECT COUNT(e) FROM " + _table + " e", Long.class);
+            return countQuery.getSingleResult();
+        } else {
+            TypedQuery<Long> countQuery = em.createQuery("SELECT COUNT(e) FROM " + _table + " e " + _query, Long.class);
+            for (int i = 0; i < _queryParam.size(); i++) {
+                countQuery.setParameter(i + 1, _queryParam.poll());
+            }
+            return countQuery.getSingleResult();
+        }
+    }
+
+
+    /**
      * Delete an entity from the database.
      *
      * @param entity The entity to delete.
@@ -163,10 +374,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     @Override
     @Transactional
     public boolean delete(T entity) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            entityManager.remove(entity);
+            em.remove(entity);
             transaction.commit();
             return true;
         } catch (Exception e) {
@@ -179,14 +390,13 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         try {
-            if (entityManager != null) {
-                entityManager.close();
+            if (em != null) {
+                em.close();
             }
         } catch (Exception e) {
             logger.error("Error while closing entity manager", e);
-            throw new IOException(e.getMessage());
         }
     }
 }
