@@ -1,94 +1,67 @@
 package org.airafrika.Core;
 
+import com.zaxxer.hikari.HikariDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import lombok.Getter;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.airafrika.Config.PersistenceUnitConfig;
+import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * HibernateUtil is a utility class for managing Hibernate EntityManagerFactory
- * and initializing the Hibernate configuration for your application.
+ * `HibernateUtil` is a utility class for managing the Hibernate `EntityManagerFactory`.
+ * It initializes the Hibernate configuration for your application.
  */
-@Named
-@ApplicationScoped
+@Dependent
 public class HibernateUtil {
 
-    private HibernateUtil() {
-    }
-
     /**
-     * The EntityManagerFactory used for managing entity objects.
+     * The `EntityManagerFactory` used for managing entity objects.
      */
     @Getter
     @Produces
     private static volatile EntityManagerFactory entityManagerFactory = null;
 
-    static {
+    @Inject
+    private volatile PersistenceUnitConfig persistenceUnitInfo;
+
+    protected volatile static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
+
+    /**
+     * Initializes the `EntityManagerFactory` and returns it.
+     *
+     * @return The initialized `EntityManagerFactory`.
+     * @throws ExceptionInInitializerError if the initialization fails.
+     */
+    public EntityManagerFactory init() {
         if (entityManagerFactory == null) {
             synchronized (HibernateUtil.class) {
                 if (entityManagerFactory == null) {
                     try {
-                        Configuration configuration = new Configuration();
-                        configuration.setProperties(loadHibernateProperties());
-
-                        addAnnotatedClasses(configuration);
-
-                        StandardServiceRegistryBuilder serviceRegistryBuilder =
-                                new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-
-                        entityManagerFactory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
+                        entityManagerFactory = new HibernatePersistenceProvider()
+                                .createContainerEntityManagerFactory(
+                                        persistenceUnitInfo,
+                                        persistenceUnitInfo.getProperties()
+                                );
                     } catch (Throwable ex) {
-                        System.err.println("Initial SessionFactory creation failed: " + ex);
+                        logger.error("Initial SessionFactory creation failed", ex);
                         throw new ExceptionInInitializerError(ex);
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Adds annotated entity classes to the Hibernate configuration.
-     *
-     * @param configuration The Hibernate Configuration instance.
-     */
-    private static void addAnnotatedClasses(Configuration configuration) {
-        configuration
-                .addAnnotatedClass(org.airafrika.App.Entities.Admin.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Plane.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.CompanyAerial.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Airport.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Flight.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.FlightSchedule.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Passenger.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Reservation.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Itinerary.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Flightpath.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Plane.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.ReservationExtra.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Extra.class)
-                .addAnnotatedClass(org.airafrika.App.Entities.Paiement.class);
-    }
-
-    /**
-     * Loads the Hibernate properties from the environment variables.
-     *
-     * @return The Hibernate properties.
-     */
-    private static Properties loadHibernateProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.connection.url", System.getenv("DB_URL"));
-        properties.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
-        properties.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
-        properties.setProperty("hibernate.connection.driver_class", System.getenv("JDBC_DRIVER"));
-        properties.setProperty("hibernate.dialect", System.getenv("JPA_DIALECT"));
-        properties.setProperty("hibernate.show_sql", System.getenv("HIBERNATE_SHOW_SQL"));
-        properties.setProperty("hibernate.current_session_context_class", System.getenv("CURRENT_SESSION_CONTEXT_CLASS"));
-        properties.setProperty("hibernate.hbm2ddl.auto", System.getenv("HBM2DDL_AUTO"));
-        return properties;
+        return entityManagerFactory;
     }
 }

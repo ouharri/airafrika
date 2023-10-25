@@ -39,9 +39,9 @@ public class Admin implements Serializable {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
-    @Size(max = 200)
-    @NotNull
     @Email
+    @NotNull
+    @Size(max = 200)
     @Column(name = "email", nullable = false, length = 200)
     private String email;
 

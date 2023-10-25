@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
-    <script src="assets/scripts/tailwindcss.js"></script>
+    <script src="assets/scripts/vendor/tailwindcss.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/styles/main.css">
 </head>
 <body>

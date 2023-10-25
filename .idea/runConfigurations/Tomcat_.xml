@@ -145,6 +145,11 @@
         <option name="VALUE" value="org.hibernate.dialect.PostgreSQLDialect" />
         <option name="IS_PREDEFINED" value="false" />
       </EnvironmentVariables>
+      <EnvironmentVariables>
+        <option name="NAME" value="PERSISTENCE_UNIT_TRANSACTION_TYPE" />
+        <option name="VALUE" value="RESOURCE_LOCAL" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
