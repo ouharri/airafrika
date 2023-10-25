@@ -156,7 +156,7 @@ public interface DaoInterface<T> {
      *
      * @return A model corresponding to the query.
      */
-    T findOne();
+    Optional<T> findOne();
 
     /**
      * Counts the number of records returned by the query.

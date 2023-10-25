@@ -3,6 +3,11 @@ package org.airafrika.Libs;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Table;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.airafrika.Core.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +18,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Table;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
-
 /**
  * Generic Data Access Object (DAO) for database operations.
  *
@@ -28,18 +27,14 @@ import jakarta.transaction.Transactional;
 @Alternative
 public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
 
+    protected volatile static EntityManager em = null;
     private final Class<T> _clazz;
-    private volatile String _table;
-
-
     private final StringBuilder _query = new StringBuilder();
     private final Queue<Object> _queryParam = new LinkedList<>();
-
+    protected volatile Logger logger;
+    private volatile String _table;
     @Inject
-    private HibernateUtil hu;
-    protected volatile static EntityManager em = null;
-
-    protected volatile static Logger logger;
+    private volatile HibernateUtil hu;
 
 
     /**
@@ -119,9 +114,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
             return Optional.of(entity);
         } catch (Exception e) {
             logger.error("Error while creating entity", e);
-            if (transaction.isActive()) {
+            if (transaction.isActive())
                 transaction.rollback();
-            }
             return Optional.empty();
         }
     }
@@ -143,9 +137,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
             return Optional.of(updatedEntity);
         } catch (Exception e) {
             logger.error("Error while updating entity", e);
-            if (transaction.isActive()) {
+            if (transaction.isActive())
                 transaction.rollback();
-            }
             return Optional.empty();
         }
     }
@@ -166,9 +159,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
             return Optional.ofNullable(entity);
         } catch (Exception e) {
             logger.error("Error while finding entity", e);
-            if (transaction.isActive()) {
+            if (transaction.isActive())
                 transaction.rollback();
-            }
             return Optional.empty();
         }
     }
@@ -182,6 +174,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      */
     @Override
     public Dao<T> where(String key, Object value) {
+        if (!_query.isEmpty())
+            _query.setLength(0);
+        if (!_queryParam.isEmpty())
+            _queryParam.clear();
         _queryParam.add(value);
         _query.append(" WHERE ").append(key).append(" = :").append("param").append(_queryParam.size());
         return this;
@@ -197,6 +193,10 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      */
     @Override
     public Dao<T> where(String key, String operator, Object value) {
+        if (!_query.isEmpty())
+            _query.setLength(0);
+        if (!_queryParam.isEmpty())
+            _queryParam.clear();
         _queryParam.add(value);
         _query.append(" WHERE ").append(key).append(" ").append(operator).append(" :").append("param").append(_queryParam.size());
         return this;
@@ -318,7 +318,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      */
     @Override
     public List<T> find() {
-        if (_query.isEmpty()) return new ArrayList<>();
+        if (_query.isEmpty())
+            return new ArrayList<>();
         EntityTransaction transaction = getEntityManager().getTransaction();
         try {
             transaction.begin();
@@ -326,12 +327,12 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
             int queryParamCount = _queryParam.size();
             for (int i = 0; i < queryParamCount; i++)
                 query.setParameter("param" + (i + 1), _queryParam.poll());
+            transaction.commit();
             return query.getResultList();
         } catch (Exception e) {
             logger.error("Error while updating entity", e);
-            if (transaction.isActive()) {
+            if (transaction.isActive())
                 transaction.rollback();
-            }
         }
         return new ArrayList<>();
     }
@@ -342,24 +343,25 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The model object representing the retrieved record, or null if not found.
      */
     @Override
-    public T findOne() {
-        if (_query.isEmpty()) return null;
-        _query.append(" LIMIT 1");
+    public Optional<T> findOne() {
+        if (_query.isEmpty())
+            return Optional.empty();
         EntityTransaction transaction = getEntityManager().getTransaction();
         try {
             transaction.begin();
             TypedQuery<T> query = getEntityManager().createQuery("FROM " + _table + _query, _clazz);
+            query.setMaxResults(1);
             int queryParamCount = _queryParam.size();
             for (int i = 0; i < queryParamCount; i++)
                 query.setParameter("param" + (i + 1), _queryParam.poll());
-            return query.getSingleResult();
+            transaction.commit();
+            return Optional.ofNullable(query.getSingleResult());
         } catch (Exception e) {
             logger.error("Error while updating entity", e);
-            if (transaction.isActive()) {
+            if (transaction.isActive())
                 transaction.rollback();
-            }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -399,9 +401,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
             return true;
         } catch (Exception e) {
             logger.error("Error while deleting entity", e);
-            if (transaction.isActive()) {
+            if (transaction.isActive())
                 transaction.rollback();
-            }
             return false;
         }
     }
@@ -414,9 +415,8 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
     @Override
     public void close() {
         try {
-            if (em != null && em.isOpen()) {
+            if (em != null && em.isOpen())
                 em.close();
-            }
         } catch (Exception e) {
             logger.error("Erreur lors de la fermeture de l'EntityManager", e);
         }
