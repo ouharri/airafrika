@@ -1,19 +1,21 @@
 package org.airafrika.App.Controllers;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.util.UUID;
-
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.mvc.Controller;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.airafrika.App.Entities.Admin;
 import org.airafrika.App.Enums.Gender;
 import org.airafrika.App.Model.AdminDao;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-import org.airafrika.App.Entities.Admin;
-import org.airafrika.App.Services.AdminService;
 import org.airafrika.Utils.Alert;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Controller
 @RequestScoped
@@ -52,11 +54,13 @@ public class HelloController extends HttpServlet {
         out.println("<html><body>");
         out.println("<pre>");
 
-        System.out.println(
+        out.println(
                 adminService.where("email", "ouharrioutman@gmail.com")
                         .and("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
+                        .or("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
                         .findOne().toString()
         );
+
         adminService.where("email", "ouharrioutman@gmail.com")
                 .and("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
                 .find().forEach((e) -> {
@@ -64,6 +68,7 @@ public class HelloController extends HttpServlet {
                     out.println(e.toString());
                     out.println("</pre>");
                 });
+
         out.println("</pre>");
     }
 
