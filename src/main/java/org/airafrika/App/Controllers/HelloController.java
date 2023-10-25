@@ -24,7 +24,7 @@ public class HelloController extends HttpServlet {
     private String message;
 
     @Inject
-    private AdminDao adminService;
+    private AdminDao adminDao;
 
     public void init() {
         message = "Hello World!";
@@ -49,19 +49,19 @@ public class HelloController extends HttpServlet {
         admin.setProfilePicture("ff");
         admin.setGender(Gender.MALE);
 
-        adminService.create(admin);
+        adminDao.create(admin);
 
         out.println("<html><body>");
         out.println("<pre>");
 
         out.println(
-                adminService.where("email", "ouharrioutman@gmail.com")
+                adminDao.where("email", "ouharrioutman@gmail.com")
                         .and("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
                         .or("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
                         .findOne().toString()
         );
 
-        adminService.where("email", "ouharrioutman@gmail.com")
+        adminDao.where("email", "ouharrioutman@gmail.com")
                 .and("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
                 .find().forEach((e) -> {
                     out.println("<pre>");
