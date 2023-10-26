@@ -40,7 +40,7 @@ import org.jboss.logging.Logger;
 
 @Dependent
 public class HibernatePersistenceProvider implements PersistenceProvider {
-    private static final Logger log = Logger.getLogger( org.hibernate.jpa.HibernatePersistenceProvider.class );
+    private static final Logger log = Logger.getLogger( org.airafrika.App.Providers.HibernatePersistenceProvider.class );
 
     private final PersistenceUtilHelper.MetadataCache cache = new PersistenceUtilHelper.MetadataCache();
 
