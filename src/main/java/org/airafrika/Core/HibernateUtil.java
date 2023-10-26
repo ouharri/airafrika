@@ -40,7 +40,7 @@ public class HibernateUtil {
     @Inject
     private volatile HibernatePersistenceProvider hibernatePersistenceProvider;
 
-    protected volatile static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
+    protected volatile static Logger logger = LoggerFactory.getLogger(org.airafrika.Core.HibernateUtil.class);
 
     /**
      * Initializes the `EntityManagerFactory` and returns it.
