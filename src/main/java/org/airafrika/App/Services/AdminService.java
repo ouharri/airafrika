@@ -6,7 +6,6 @@ import org.airafrika.App.Entities.Admin;
 import org.airafrika.App.Model.AdminDao;
 
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class AdminService {
