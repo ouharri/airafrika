@@ -27,14 +27,15 @@ import java.util.*;
 @Alternative
 public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
 
-    protected volatile static EntityManager em = null;
     private final Class<T> _clazz;
     private final StringBuilder _query = new StringBuilder();
     private final Queue<Object> _queryParam = new LinkedList<>();
     protected volatile Logger logger;
     private volatile String _table;
+
     @Inject
     private volatile HibernateUtil hu;
+    protected volatile static EntityManager em = null;
 
 
     /**

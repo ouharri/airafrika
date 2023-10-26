@@ -12,8 +12,8 @@ import jakarta.persistence.PersistenceUnit;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import lombok.Getter;
+import org.airafrika.App.Providers.HibernatePersistenceProvider;
 import org.airafrika.Config.PersistenceUnitConfig;
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +37,9 @@ public class HibernateUtil {
     @Inject
     private volatile PersistenceUnitConfig persistenceUnitInfo;
 
+    @Inject
+    private volatile HibernatePersistenceProvider hibernatePersistenceProvider;
+
     protected volatile static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
 
     /**
@@ -50,7 +53,7 @@ public class HibernateUtil {
             synchronized (HibernateUtil.class) {
                 if (entityManagerFactory == null) {
                     try {
-                        entityManagerFactory = new HibernatePersistenceProvider()
+                        entityManagerFactory = hibernatePersistenceProvider
                                 .createContainerEntityManagerFactory(
                                         persistenceUnitInfo,
                                         persistenceUnitInfo.getProperties()
