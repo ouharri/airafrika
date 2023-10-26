@@ -34,6 +34,8 @@ public class HelloController extends HttpServlet {
 
 
         Alert.add(request, "Aji lhna");
+
+
         response.setContentType("text/html");
 
         PrintWriter out = response.getWriter();
