@@ -1,14 +1,14 @@
-package org.airafrika.App.Model;
+package org.airafrika.App.Repositories;
 
 import jakarta.enterprise.inject.Model;
 import jakarta.transaction.Transactional;
 import org.airafrika.App.Entities.Passenger;
-import org.airafrika.Libs.Dao;
+import org.airafrika.Libs.Repository;
 
 import java.util.Optional;
 
 @Model
-public class PassengerDao extends Dao<Passenger> {
+public class PassengerRepository extends Repository<Passenger> {
 
     @Transactional
     public Optional<Passenger> findByEmailAndPassword(String email, String password) {

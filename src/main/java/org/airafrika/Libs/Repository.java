@@ -25,7 +25,7 @@ import java.util.*;
  */
 @Dependent
 @Alternative
-public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
+public class Repository<T> implements RepositoryInterface<T>, Serializable, Closeable {
 
     private final Class<T> _clazz;
     private final StringBuilder _query = new StringBuilder();
@@ -35,14 +35,14 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
 
     @Inject
     private volatile HibernateUtil hu;
-    protected volatile static EntityManager em = null;
+    private volatile static EntityManager em = null;
 
 
     /**
      * Constructs a new Dao instance for a specific entity type.
      */
     @SuppressWarnings("unchecked")
-    public Dao() {
+    public Repository() {
         ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
         Type type = superClass.getActualTypeArguments()[0];
         _clazz = (Class<T>) type;
@@ -61,9 +61,9 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      *
      * @return The EntityManager instance.
      */
-    private synchronized EntityManager getEntityManager() {
+    protected synchronized EntityManager getEntityManager() {
         if (em == null) {
-            synchronized (Dao.class) {
+            synchronized (Repository.class) {
                 if (em == null) {
                     try {
                         em = hu.init().createEntityManager();
@@ -174,7 +174,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the WHERE clause added.
      */
     @Override
-    public Dao<T> where(String key, Object value) {
+    public Repository<T> where(String key, Object value) {
         if (!_query.isEmpty())
             _query.setLength(0);
         if (!_queryParam.isEmpty())
@@ -193,7 +193,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the WHERE clause added.
      */
     @Override
-    public Dao<T> where(String key, String operator, Object value) {
+    public Repository<T> where(String key, String operator, Object value) {
         if (!_query.isEmpty())
             _query.setLength(0);
         if (!_queryParam.isEmpty())
@@ -211,7 +211,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the AND clause added.
      */
     @Override
-    public Dao<T> and(String key, Object value) {
+    public Repository<T> and(String key, Object value) {
         _queryParam.add(value);
         _query.append(" AND ").append(key).append(" = :").append("param").append(_queryParam.size());
         return this;
@@ -226,7 +226,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the AND clause added.
      */
     @Override
-    public Dao<T> and(String key, String operator, Object value) {
+    public Repository<T> and(String key, String operator, Object value) {
         _queryParam.add(value);
         _query.append(" AND ").append(key).append(" ").append(operator).append(" :").append("param").append(_queryParam.size());
         return this;
@@ -240,7 +240,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the OR clause added.
      */
     @Override
-    public Dao<T> or(String key, Object value) {
+    public Repository<T> or(String key, Object value) {
         _queryParam.add(value);
         _query.append(" OR ").append(key).append(" = :").append("param").append(_queryParam.size());
         return this;
@@ -255,7 +255,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the OR clause added.
      */
     @Override
-    public Dao<T> or(String key, String operator, Object value) {
+    public Repository<T> or(String key, String operator, Object value) {
         _queryParam.add(value);
         _query.append(" OR ").append(key).append(" ").append(operator).append(" :").append("param").append(_queryParam.size());
         return this;
@@ -269,7 +269,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the LIKE clause added.
      */
     @Override
-    public Dao<T> like(String key, Object value) {
+    public Repository<T> like(String key, Object value) {
         _queryParam.add(value);
         _query.append(" WHERE ").append(key).append(" LIKE :").append("param").append("param").append(_queryParam.size());
         return this;
@@ -282,7 +282,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the LIMIT clause added.
      */
     @Override
-    public Dao<T> limit(int limit) {
+    public Repository<T> limit(int limit) {
         _query.append(" LIMIT ").append(limit);
         return this;
     }
@@ -294,7 +294,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the OFFSET clause added.
      */
     @Override
-    public Dao<T> offset(int offset) {
+    public Repository<T> offset(int offset) {
         _query.append(" OFFSET ").append(offset);
         return this;
     }
@@ -307,7 +307,7 @@ public class Dao<T> implements DaoInterface<T>, Serializable, Closeable {
      * @return The current Dao instance with the ORDER BY clause added.
      */
     @Override
-    public Dao<T> orderBy(String key, String direction) {
+    public Repository<T> orderBy(String key, String direction) {
         _query.append(" ORDER BY ").append(key).append(" ").append(direction);
         return this;
     }

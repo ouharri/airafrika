@@ -6,37 +6,50 @@ import jakarta.mvc.Controller;
 import jakarta.mvc.View;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import org.airafrika.App.Services.AdminService;
+import org.airafrika.App.Repositories.AdminRepository;
 
-@RequestScoped
+import java.util.UUID;
+
 @Controller
+@RequestScoped
 @Path("/admin")
 public class AdminController {
 
     @Inject
-    private AdminService adminService; // Supposons que vous ayez un service
+    private AdminRepository admin;
 
     @GET
     @View("pages/auth/login.jsp")
-    @Path("/login") // Correspond à "/admin/login"
-    public void login() {
-        // Logique pour gérer la page de connexion
+    @Path("/login")
+    public String login() {
+
+        System.out.println("\n\n");
+        System.out.println("Hello from AdminController.login()");
+        System.out.println("\n\n");
+
+
+        admin.where("email", "ouharrioutman@gmail.com")
+                .and("id", UUID.fromString("4e4a2a9b-e8c0-4f3a-b384-bebb5da5df0e"))
+                .find().forEach((e) -> {
+                    System.out.println("<pre>");
+                    System.out.println(e.toString());
+                    System.out.println("</pre>");
+                });
+
+        return "pages/auth/login.jsp";
     }
 
     @GET
     @View("pages/authentication")
-    @Path("/register") // Correspond à "/admin/register"
+    @Path("/register")
     public void register() {
-        // Logique pour gérer la page d'inscription
+
     }
 
     @GET
     @View("admin/allUsers.jsp")
-    @Path("/getAllUsers") // Correspond à "/admin/getAllUsers"
+    @Path("/getAllUsers")
     public void getAllUsers() {
-        // Logique pour afficher tous les utilisateurs
-    }
 
-    // Vous pouvez ajouter d'autres actions ici de la même manière
+    }
 }

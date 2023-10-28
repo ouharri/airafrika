@@ -10,7 +10,7 @@ import java.util.UUID;
  *
  * @param <T> The type of entity to be managed.
  */
-public interface DaoInterface<T> {
+public interface RepositoryInterface<T> {
 
     /**
      * Retrieves an entity by its unique identifier.
@@ -60,7 +60,7 @@ public interface DaoInterface<T> {
      * @param value The value to compare.
      * @return An instance of the model with the "WHERE" condition added.
      */
-    DaoInterface<T> where(String key, Object value);
+    RepositoryInterface<T> where(String key, Object value);
 
     /**
      * Specifies a "WHERE" condition with a custom operator for queries.
@@ -70,7 +70,7 @@ public interface DaoInterface<T> {
      * @param value    The value to compare.
      * @return An instance of the model with the "WHERE" condition added.
      */
-    DaoInterface<T> where(String key, String operator, Object value);
+    RepositoryInterface<T> where(String key, String operator, Object value);
 
     /**
      * Specifies an "AND" condition for queries.
@@ -79,7 +79,7 @@ public interface DaoInterface<T> {
      * @param value The value to compare.
      * @return An instance of the model with the "AND" condition added.
      */
-    DaoInterface<T> and(String key, Object value);
+    RepositoryInterface<T> and(String key, Object value);
 
     /**
      * Specifies an "AND" condition with a custom operator for queries.
@@ -89,7 +89,7 @@ public interface DaoInterface<T> {
      * @param value    The value to compare.
      * @return An instance of the model with the "AND" condition added.
      */
-    DaoInterface<T> and(String key, String operator, Object value);
+    RepositoryInterface<T> and(String key, String operator, Object value);
 
     /**
      * Specifies an "OR" condition for queries.
@@ -98,7 +98,7 @@ public interface DaoInterface<T> {
      * @param value The value to compare.
      * @return An instance of the model with the "OR" condition added.
      */
-    DaoInterface<T> or(String key, Object value);
+    RepositoryInterface<T> or(String key, Object value);
 
     /**
      * Specifies an "OR" condition with a custom operator for queries.
@@ -108,7 +108,7 @@ public interface DaoInterface<T> {
      * @param value    The value to compare.
      * @return An instance of the model with the "OR" condition added.
      */
-    DaoInterface<T> or(String key, String operator, Object value);
+    RepositoryInterface<T> or(String key, String operator, Object value);
 
     /**
      * Specifies a "LIKE" condition for queries.
@@ -117,7 +117,7 @@ public interface DaoInterface<T> {
      * @param value The value to search for.
      * @return An instance of the model with the "LIKE" condition added.
      */
-    DaoInterface<T> like(String key, Object value);
+    RepositoryInterface<T> like(String key, Object value);
 
     /**
      * Limits the number of results returned by the query.
@@ -125,7 +125,7 @@ public interface DaoInterface<T> {
      * @param limit The maximum number of records to return.
      * @return An instance of the model with the limit added.
      */
-    DaoInterface<T> limit(int limit);
+    RepositoryInterface<T> limit(int limit);
 
     /**
      * Sets an offset for query results.
@@ -133,7 +133,7 @@ public interface DaoInterface<T> {
      * @param offset The number of records to skip before starting to return results.
      * @return An instance of the model with the offset added.
      */
-    DaoInterface<T> offset(int offset);
+    RepositoryInterface<T> offset(int offset);
 
     /**
      * Specifies the sorting order of query results.
@@ -142,7 +142,7 @@ public interface DaoInterface<T> {
      * @param direction The sorting direction (ascending or descending).
      * @return An instance of the model with the specified sorting order.
      */
-    DaoInterface<T> orderBy(String key, String direction);
+    RepositoryInterface<T> orderBy(String key, String direction);
 
     /**
      * Executes the query and returns a list of results.
