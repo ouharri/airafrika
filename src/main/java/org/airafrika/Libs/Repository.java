@@ -35,7 +35,7 @@ public class Repository<T> implements RepositoryInterface<T>, Serializable, Clos
 
     @Inject
     private volatile HibernateUtil hu;
-    private volatile static EntityManager em = null;
+    protected volatile static EntityManager em = null;
 
 
     /**
