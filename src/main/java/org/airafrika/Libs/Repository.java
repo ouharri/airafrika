@@ -419,7 +419,7 @@ public class Repository<T> implements RepositoryInterface<T>, Serializable, Clos
             if (em != null && em.isOpen())
                 em.close();
         } catch (Exception e) {
-            logger.error("Erreur lors de la fermeture de l'EntityManager", e);
+            logger.error("Error closing EntityManager", e);
         }
     }
 
