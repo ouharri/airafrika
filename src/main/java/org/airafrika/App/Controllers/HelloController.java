@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.airafrika.App.Entities.Admin;
 import org.airafrika.App.Enums.Gender;
-import org.airafrika.App.Model.AdminDao;
+import org.airafrika.App.Repositories.AdminRepository;
 import org.airafrika.Utils.Alert;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class HelloController extends HttpServlet {
     private String message;
 
     @Inject
-    private AdminDao adminDao;
+    private AdminRepository adminDao;
 
     public void init() {
         message = "Hello World!";
@@ -34,6 +34,8 @@ public class HelloController extends HttpServlet {
 
 
         Alert.add(request, "Aji lhna");
+
+
         response.setContentType("text/html");
 
         PrintWriter out = response.getWriter();

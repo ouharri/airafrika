@@ -2,17 +2,16 @@ package org.airafrika.App.Services;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
-import org.airafrika.App.Entities.Admin;
-import org.airafrika.App.Model.AdminDao;
-import org.airafrika.App.Model.PassengerDao;
+import org.airafrika.App.Repositories.AdminRepository;
+import org.airafrika.App.Repositories.PassengerRepository;
 
 public class AuthentificationService {
 
     @Inject
-    private AdminDao adminDao;
+    private AdminRepository adminDao;
 
     @Inject
-    private PassengerDao passengerDao;
+    private PassengerRepository passengerDao;
 
 
     public Boolean AuthentificationPassenger(HttpServletRequest request){

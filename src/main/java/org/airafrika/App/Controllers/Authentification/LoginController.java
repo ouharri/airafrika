@@ -9,26 +9,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.airafrika.App.Entities.Admin;
-import org.airafrika.App.Enums.Gender;
-import org.airafrika.App.Model.AdminDao;
-import org.airafrika.Utils.Alert;
+import org.airafrika.App.Repositories.AdminRepository;
+import org.airafrika.App.Services.AdminService;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
-import java.time.LocalDate;
 
 @Controller
 @RequestScoped
-@WebServlet(name = "login", value = "/login")
+@WebServlet(name = "LoginController", value = "/login")
 public class LoginController extends HttpServlet {
 
     @Inject
-    private Admin admn;
+    private AdminService admin;
 
     @Inject
-    private AdminDao adminDao;
+    private AdminRepository adminDao;
 
     public void init() {
 
@@ -46,13 +41,7 @@ public class LoginController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
 
-
-//        Alert.add(request,"Aji lhna");
-
-        Alert.notif(request);
-
-        // Rediriger vers la page JSP
-        request.getRequestDispatcher("/pages/auth/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/pages/auth/login.jsp").forward(request, response);
     }
 
 

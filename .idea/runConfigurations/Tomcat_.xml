@@ -8,12 +8,12 @@
     <deployment>
       <artifact name="AirAfrika:war exploded">
         <settings>
-          <option name="CONTEXT_PATH" value="/AirAfrika" />
+          <option name="CONTEXT_PATH" value="/AirAfrika_war_exploded" />
         </settings>
       </artifact>
       <artifact name="AirAfrika:war">
         <settings>
-          <option name="CONTEXT_PATH" value="/AirAfrika_war" />
+          <option name="CONTEXT_PATH" value="/AirAfrika" />
         </settings>
       </artifact>
     </deployment>
@@ -153,10 +153,9 @@
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
-      <option name="MakeProject" enabled="true" />
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="AirAfrika:war exploded" />
         <artifact name="AirAfrika:war" />
+        <artifact name="AirAfrika:war exploded" />
       </option>
     </method>
   </configuration>

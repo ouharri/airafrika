@@ -24,6 +24,6 @@ public class DashController extends HttpServlet {
         Alert.notif(request);
 
         // Rediriger vers la page JSP
-        request.getRequestDispatcher("/pages/dash.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/pages/dash.jsp").forward(request, response);
     }
 }
