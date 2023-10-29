@@ -15,13 +15,13 @@ public class Alert {
         session.setAttribute("alert", new AlertInfo(message, "success"));
     }
 
-    public static void notif(HttpServletRequest request) {
+    public static void notify(HttpServletRequest request) {
         String alert = "";
         HttpSession session = request.getSession();
         AlertInfo alertInfo = (AlertInfo) session.getAttribute("alert");
         if (alertInfo != null) {
-            String message = alertInfo.getMessage();
-            String icon = alertInfo.getIcon();
+            String message = alertInfo.message();
+            String icon = alertInfo.icon();
             alert = "<script src='http://airafrika.org/assets/scripts/utils/alert.js'></script>" +
                     "<script>Alert('" + message + "', '" + icon + "');</script>";
             session.removeAttribute("alert");
@@ -29,21 +29,6 @@ public class Alert {
         request.setAttribute("alert", alert);
     }
 
-    private static class AlertInfo {
-        private String message;
-        private String icon;
-
-        public AlertInfo(String message, String icon) {
-            this.message = message;
-            this.icon = icon;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public String getIcon() {
-            return icon;
-        }
+    private record AlertInfo(String message, String icon) {
     }
 }
